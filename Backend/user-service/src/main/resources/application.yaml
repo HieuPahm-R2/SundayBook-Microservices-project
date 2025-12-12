@@ -1,3 +1,34 @@
+server:
+  port: 5001
+
 spring:
   application:
     name: user-service
+
+  datasource:
+    url: "jdbc:mysql://localhost:3306/sunbook_userdb?createDatabaseIfNotExist=true"
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 123456
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  rabbitmq:
+    port: 5672
+    host: localhost
+    username: guest
+    password: guest
+
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: hieuxitsuki05@gmail.com
+    password: rlxz dggl spmd byfd
+    properties:
+      mail:
+        smtp:
+          auth: true
+        starttls:
+          enable: true
