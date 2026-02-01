@@ -6,7 +6,7 @@ spring:
     name: user-service
 
   datasource:
-    url: "jdbc:mysql://localhost:3306/sunbook_userdb?createDatabaseIfNotExist=true"
+    url: "jdbc:mysql://localhost:3306/sunbook_user?createDatabaseIfNotExist=true"
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: 123456
