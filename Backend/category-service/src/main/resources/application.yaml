@@ -1,0 +1,28 @@
+server:
+  port: 5004
+
+spring:
+  application:
+    name: category-service
+
+  datasource:
+    url: "jdbc:mysql://localhost:3306/salon_categorydb?createDatabaseIfNotExist=true"
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: $7090Ashok
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: gedelashipa.1321@gmail.com
+    password: rlxz dggl spmd byfd
+    properties:
+      mail:
+        smtp:
+          auth: true
+        starttls:
+          enable: true
