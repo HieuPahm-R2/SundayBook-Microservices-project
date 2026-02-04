@@ -1,0 +1,29 @@
+server:
+  port: 5005
+
+spring:
+  application:
+    name: offering-service
+
+  datasource:
+    url: "jdbc:mysql://localhost:3306/sunbook_offerservice?createDatabaseIfNotExist=true"
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 123456
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: hieuxitsuki05@gmail.com
+    password: rlxz dggl spmd byfd
+    properties:
+      mail:
+        smtp:
+          auth: true
+        starttls:
+          enable: true
