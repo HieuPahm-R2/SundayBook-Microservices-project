@@ -5,20 +5,23 @@ import com.hieupahm.error.UserException;
 import com.hieupahm.model.PaymentOrder;
 import com.hieupahm.payload.dto.BookingDTO;
 import com.hieupahm.payload.dto.UserDTO;
-import com.hieupahm.payload.res.PaymentLinkResponse;
+import com.hieupahm.payload.req.InitPaymentRequest;
+import com.hieupahm.payload.res.InitPaymentResponse;
 import com.stripe.exception.StripeException;
 
 public interface PaymentService {
-    PaymentLinkResponse createOrder(UserDTO user,
-            BookingDTO booking, PaymentMethod paymentMethod) throws UserException, StripeException;
+        InitPaymentResponse init(InitPaymentRequest request);
 
-    PaymentOrder getPaymentOrderById(Long id) throws Exception;
+        InitPaymentResponse createOrder(UserDTO user, BookingDTO booking, PaymentMethod paymentMethod)
+                        throws UserException, StripeException;
 
-    PaymentOrder getPaymentOrderByPaymentId(String paymentId) throws Exception;
+        PaymentOrder getPaymentOrderById(Long id) throws Exception;
 
-    Boolean ProceedPaymentOrder(PaymentOrder paymentOrder,
-            String paymentId, String paymentLinkId) throws StripeException;
+        PaymentOrder getPaymentOrderByPaymentId(String paymentId) throws Exception;
 
-    String createStripePaymentLink(UserDTO user, Long Amount,
-            Long orderId) throws StripeException;
+        Boolean ProceedPaymentOrder(PaymentOrder paymentOrder,
+                        String paymentId, String paymentLinkId) throws StripeException;
+
+        String createStripePaymentLink(UserDTO user, Long Amount,
+                        Long orderId) throws StripeException;
 }

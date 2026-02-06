@@ -15,12 +15,6 @@ spring:
       ddl-auto: update
     show-sql: true
 
-  # rabbitmq:
-  #   port: 5672
-  #   host: localhost
-  #   username: guest
-  #   password: guest
-
   mail:
     host: smtp.gmail.com
     port: 587
@@ -32,3 +26,13 @@ spring:
           auth: true
         starttls:
           enable: true
+payment:
+  vnpay:
+    tmn-code: RONINHUB
+    secret-key: ${VNPAY_SECRET_KEY}
+    init-payment-url: https://sandbox.vnpayment.vn/paymentv2/vpcpay.html
+    return-url: https://dev.roninhub.com/order/%s/status
+    timeout: 15 # in minutes
+stripe:
+  api:
+    key: sk_test_51OY24RHktfaHaMpma35wc5WWVeCTtr23N5crNHIT0RkFlc7tQkAqdoH09x4QbHOfZfQf6MIvcio4lTJFllnOxGxj00dI1RvRn5
