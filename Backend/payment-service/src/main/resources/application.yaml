@@ -33,6 +33,3 @@ payment:
     init-payment-url: https://sandbox.vnpayment.vn/paymentv2/vpcpay.html
     return-url: https://dev.roninhub.com/order/%s/status
     timeout: 15 # in minutes
-stripe:
-  api:
-    key: sk_test_51OY24RHktfaHaMpma35wc5WWVeCTtr23N5crNHIT0RkFlc7tQkAqdoH09x4QbHOfZfQf6MIvcio4lTJFllnOxGxj00dI1RvRn5
