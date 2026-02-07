@@ -33,3 +33,11 @@ payment:
     init-payment-url: https://sandbox.vnpayment.vn/paymentv2/vpcpay.html
     return-url: https://dev.roninhub.com/order/%s/status
     timeout: 15 # in minutes
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    fetchRegistry: true
+    registerWithEureka: true
+    serviceUrl:
+      defaultZone: http://localhost:8070/eureka/

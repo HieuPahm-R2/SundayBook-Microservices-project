@@ -26,3 +26,17 @@ spring:
           auth: true
         starttls:
           enable: true
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    fetchRegistry: true
+    registerWithEureka: true
+    serviceUrl:
+      defaultZone: http://localhost:8070/eureka/
+
+info:
+  app:
+    name: "CATEGORY"
+    description: "Category API For Salon Booking System"
+    version: "1.0.0"
