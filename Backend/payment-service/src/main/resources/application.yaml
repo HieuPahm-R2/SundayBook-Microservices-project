@@ -1,3 +1,43 @@
+server:
+  port: 5006
+
 spring:
   application:
     name: payment-service
+
+  datasource:
+    url: "jdbc:mysql://localhost:3306/sunbook_payment?createDatabaseIfNotExist=true"
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 123456
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: hieuxitsuki05@gmail.com
+    password: rlxz dggl spmd byfd
+    properties:
+      mail:
+        smtp:
+          auth: true
+        starttls:
+          enable: true
+payment:
+  vnpay:
+    tmn-code: RONINHUB
+    secret-key: ${VNPAY_SECRET_KEY}
+    init-payment-url: https://sandbox.vnpayment.vn/paymentv2/vpcpay.html
+    return-url: https://dev.roninhub.com/order/%s/status
+    timeout: 15 # in minutes
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    fetchRegistry: true
+    registerWithEureka: true
+    serviceUrl:
+      defaultZone: http://localhost:8070/eureka/

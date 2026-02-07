@@ -32,3 +32,16 @@ spring:
           auth: true
         starttls:
           enable: true
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    fetchRegistry: true
+    registerWithEureka: true
+    serviceUrl:
+      defaultZone: http://localhost:8070/eureka/
+info:
+  app:
+    name: "USER"
+    description: "USER API For SunBooking System"
+    version: "1.0.0"

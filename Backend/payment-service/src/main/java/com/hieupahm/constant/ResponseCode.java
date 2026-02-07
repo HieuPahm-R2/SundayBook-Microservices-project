@@ -1,0 +1,29 @@
+package com.hieupahm.constant;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@AllArgsConstructor
+@Getter
+public enum ResponseCode {
+    SUCCESS("SUCCESS", 200),
+    INTERNAL_SERVER_ERROR("INTERNAL_SERVER_ERROR", 500),
+    BAD_REQUEST("BAD_REQUEST", 400),
+    UNAUTHORIZED("UNAUTHORIZED", 403),
+    INVALID_PARAMS("INVALID_PARAMS", 400),
+
+    NOT_FOUND("NOT_FOUND", 404),
+
+    NOT_ACTIVE("NOT_ACTIVE", 404),
+
+    GUESTS_INVALID("GUESTS_INVALID", 400),
+
+    BOOKING_NOT_FOUND("BOOKING_NOT_FOUND", 404),
+
+    VNPAY_SIGNING_FAILED("VNPAY_SIGNING_FAILED", 400),
+    VNPAY_CHECKSUM_FAILED("VNPAY_CHECKSUM_FAILED", 400),
+    ;
+
+    private final String type;
+    private final Integer code;
+}
