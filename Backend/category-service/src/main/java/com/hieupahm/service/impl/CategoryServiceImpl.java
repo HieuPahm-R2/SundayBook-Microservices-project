@@ -38,8 +38,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category getCategoryById(Long id) throws Exception {
-        return categoryRepository.findById(id)
-                .orElseThrow(() -> new Exception("category not found"));
+        return categoryRepository.findById(id).orElseThrow(() -> new Exception("category not found"));
     }
 
     @Override

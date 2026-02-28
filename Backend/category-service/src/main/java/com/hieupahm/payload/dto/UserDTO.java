@@ -3,7 +3,7 @@ package com.hieupahm.payload.dto;
 import lombok.Data;
 
 @Data
-public class UseDTO {
+public class UserDTO {
     private Long id;
     private String fullName;
     private String email;
