@@ -6,7 +6,7 @@ spring:
     name: category-service
 
   datasource:
-    url: "jdbc:mysql://localhost:3306/salon_categorydb?createDatabaseIfNotExist=true"
+    url: "jdbc:mysql://localhost:3306/sunbook_category?createDatabaseIfNotExist=true"
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: $7090Ashok
