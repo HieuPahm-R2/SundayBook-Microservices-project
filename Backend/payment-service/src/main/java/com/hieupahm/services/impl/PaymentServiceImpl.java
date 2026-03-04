@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.TimeZone;
 
+import com.hieupahm.error.PaymentException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -19,12 +20,11 @@ import com.hieupahm.constant.Symbol;
 import com.hieupahm.domain.PaymentMethod;
 import com.hieupahm.domain.PaymentOrderStatus;
 import com.hieupahm.domain.VNpayParams;
-import com.hieupahm.error.UserException;
 import com.hieupahm.model.PaymentOrder;
 import com.hieupahm.payload.dto.BookingDTO;
 import com.hieupahm.payload.dto.UserDTO;
-import com.hieupahm.payload.req.InitPaymentRequest;
-import com.hieupahm.payload.res.InitPaymentResponse;
+import com.hieupahm.payload.req.PaymentRequest;
+import com.hieupahm.payload.res.PaymentResponse;
 import com.hieupahm.repository.PaymentOrderRepository;
 import com.hieupahm.services.CryptoService;
 import com.hieupahm.services.PaymentService;
@@ -68,7 +68,7 @@ public class PaymentServiceImpl implements PaymentService {
     private final PaymentOrderRepository paymentOrderRepository;
 
     @Override
-    public InitPaymentResponse init(InitPaymentRequest request) {
+    public PaymentResponse init(PaymentRequest request) {
         var amount = request.getAmount() * DEFAULT_MULTIPLIER; // 1. amount * 100
         var txnRef = request.getTxnRef(); // 2. bookingId
         var returnUrl = buildReturnUrl(txnRef); // 3. FE redirect by returnUrl
@@ -104,11 +104,20 @@ public class PaymentServiceImpl implements PaymentService {
 
         var initPaymentUrl = buildInitPaymentUrl(params);
         log.debug("[request_id={}] Init payment url: {}", requestId, initPaymentUrl);
-        return InitPaymentResponse.builder()
+        return PaymentResponse.builder()
                 .payment_url(initPaymentUrl)
                 .build();
     }
 
+
+
+    private String buildPaymentDetail(PaymentRequest request) {
+        return String.format("Thanh toan don dat phong %s", request.getTxnRef());
+    }
+
+    private String buildReturnUrl(String txnRef) {
+        return String.format(returnUrlFormat, txnRef);
+    }
     public boolean verifyIpn(Map<String, String> params) {
         var reqSecureHash = params.get(VNpayParams.SECURE_HASH);
         params.remove(VNpayParams.SECURE_HASH);
@@ -136,15 +145,6 @@ public class PaymentServiceImpl implements PaymentService {
         var secureHash = cryptoService.sign(hashPayload.toString());
         return secureHash.equals(reqSecureHash);
     }
-
-    private String buildPaymentDetail(InitPaymentRequest request) {
-        return String.format("Thanh toan don dat phong %s", request.getTxnRef());
-    }
-
-    private String buildReturnUrl(String txnRef) {
-        return String.format(returnUrlFormat, txnRef);
-    }
-
     @SneakyThrows
     private String buildInitPaymentUrl(Map<String, String> params) {
         var hashPayload = new StringBuilder();
@@ -185,10 +185,9 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public InitPaymentResponse createOrder(UserDTO user, BookingDTO booking, PaymentMethod paymentMethod)
-            throws UserException, StripeException {
+    public void createOrder(UserDTO user, BookingDTO booking, PaymentMethod paymentMethod) throws PaymentException {
 
-        Long amount = (long) booking.getTotalPrice();
+        long amount = booking.getTotalPrice();
 
         PaymentOrder order = new PaymentOrder();
         order.setUserId(user.getId());
@@ -196,11 +195,9 @@ public class PaymentServiceImpl implements PaymentService {
         order.setBookingId(booking.getId());
         order.setSalonId(booking.getSalonId());
         order.setPaymentMethod(paymentMethod);
+
         paymentOrderRepository.save(order);
 
-        InitPaymentResponse res = new InitPaymentResponse();
-
-        return res;
     }
 
     @Override
@@ -221,53 +218,5 @@ public class PaymentServiceImpl implements PaymentService {
         return paymentOrder;
     }
 
-    @Override
-    public Boolean ProceedPaymentOrder(PaymentOrder paymentOrder, String paymentId, String paymentLinkId)
-            throws StripeException {
-
-        if (paymentOrder.getStatus().equals(PaymentOrderStatus.PENDING)) {
-
-            if (paymentOrder.getPaymentMethod().equals(PaymentMethod.STRIPE)) {
-
-                // Integer amount = payment.get("amount");
-                // String status = payment.get("status");
-
-                paymentOrder.setStatus(PaymentOrderStatus.SUCCESS);
-                paymentOrderRepository.save(paymentOrder);
-
-                return true;
-            }
-
-        }
-
-        return false;
-    }
-
-    @Override
-    public String createStripePaymentLink(UserDTO user, Long amount, Long orderId) throws StripeException {
-        Stripe.apiKey = stripeSecretKey;
-
-        SessionCreateParams params = SessionCreateParams.builder()
-                .addPaymentMethodType(SessionCreateParams.PaymentMethodType.CARD)
-                .setMode(SessionCreateParams.Mode.PAYMENT)
-                .setSuccessUrl("http://localhost:3000/payment-success/" + orderId)
-                .setCancelUrl("http://localhost:3000/payment/cancel")
-                .addLineItem(SessionCreateParams.LineItem.builder()
-                        .setQuantity(1L)
-                        .setPriceData(SessionCreateParams.LineItem.PriceData.builder()
-                                .setCurrency("usd")
-                                .setUnitAmount(amount * 100)
-                                .setProductData(SessionCreateParams.LineItem.PriceData.ProductData
-                                        .builder()
-                                        .setName("Top up wallet")
-                                        .build())
-                                .build())
-                        .build())
-                .build();
-
-        Session session = Session.create(params);
-
-        return session.getUrl();
-    }
 
 }

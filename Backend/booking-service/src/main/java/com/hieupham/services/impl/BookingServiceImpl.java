@@ -2,11 +2,17 @@ package com.hieupham.services.impl;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
+import com.hieupham.mapper.BookingMapper;
+import com.hieupham.payload.req.PaymentRequest;
+import com.hieupham.payload.res.BookingResponse;
+import com.hieupham.payload.res.PaymentResponse;
+import com.hieupham.services.client.PaymentFeignClient;
+import jakarta.transaction.Transactional;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import com.hieupham.domain.BookingStatus;
@@ -22,11 +28,20 @@ import com.hieupham.services.BookingService;
 
 import lombok.RequiredArgsConstructor;
 
+
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class BookingServiceImpl implements BookingService {
+    public static final String VERSION = "2.1.0";
+    public static final String COMMAND = "pay";
+    public static final String ORDER_TYPE = "190000";
+    public static final long DEFAULT_MULTIPLIER = 100L;
 
     private final BookingRepository bookingRepository;
+    private final PaymentFeignClient paymentService;
+
+
 
     public boolean isTimeSlotAvailable(SalonDTO salon, LocalDateTime bookingStartTime, LocalDateTime bookingEndTime)
             throws Exception {
@@ -52,15 +67,17 @@ public class BookingServiceImpl implements BookingService {
         return dateTime.toLocalDate().isEqual(date);
     }
 
+    @SneakyThrows
+    @Transactional
     @Override
-    public Booking createBooking(BookingRequest booking, UserDTO user, SalonDTO salon,
-            Set<ServiceOfferDTO> serviceOfferingSet) throws Exception {
+    public BookingResponse createBooking(BookingRequest booking, UserDTO user, SalonDTO salon,
+                                         Set<ServiceOfferDTO> serviceOfferingSet) throws Exception {
         int totalDur = serviceOfferingSet.stream().mapToInt(ServiceOfferDTO::getDuration).sum();
         LocalDateTime timeStartBooking = booking.getStartTime();
         LocalDateTime timeEndBooking = timeStartBooking.plusMinutes(totalDur);
         // check availability
 
-        Boolean isSlotAvailable = isTimeSlotAvailable(salon, timeStartBooking, timeEndBooking);
+        boolean isSlotAvailable = isTimeSlotAvailable(salon, timeStartBooking, timeEndBooking);
 
         if (!isSlotAvailable) {
             throw new Exception("Slot is not available");
@@ -83,7 +100,24 @@ public class BookingServiceImpl implements BookingService {
         newBooking.setTotalPrice(totalPrice);
         newBooking.setStatus(BookingStatus.PENDING);
 
-        return bookingRepository.save(newBooking);
+        bookingRepository.save(newBooking);
+        var initPaymentRequest = PaymentRequest.builder()
+                .userId(user.getId())
+                .amount(totalPrice)
+                .txnRef(String.valueOf(newBooking.getId()))
+                .requestId(String.valueOf(newBooking.getId()))
+                .ipAddress(booking.getIpAddress())
+                .build();
+
+        var initPaymentResponse = paymentService.initPayment(initPaymentRequest);
+        var bookingDto = BookingMapper.toDTO(newBooking, serviceOfferingSet, salon, user);
+//        log.info("[request_id={}] User user_id={} created booking_id={} successfully");
+        return BookingResponse.builder()
+                .booking(bookingDto)
+                .payment(initPaymentResponse.getBody())
+                .build();
+
+
     }
 
     @Override

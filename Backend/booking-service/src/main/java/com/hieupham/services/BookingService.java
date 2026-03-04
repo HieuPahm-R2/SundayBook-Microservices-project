@@ -12,9 +12,10 @@ import com.hieupham.payload.dto.SalonDTO;
 import com.hieupham.payload.dto.ServiceOfferDTO;
 import com.hieupham.payload.dto.UserDTO;
 import com.hieupham.payload.req.BookingRequest;
+import com.hieupham.payload.res.BookingResponse;
 
 public interface BookingService {
-    Booking createBooking(BookingRequest booking, UserDTO user, SalonDTO salon, Set<ServiceOfferDTO> serviceOfferingSet)
+    BookingResponse createBooking(BookingRequest booking, UserDTO user, SalonDTO salon, Set<ServiceOfferDTO> serviceOfferingSet)
             throws Exception;
 
     List<Booking> getBookingsByCustomer(Long customerId);
