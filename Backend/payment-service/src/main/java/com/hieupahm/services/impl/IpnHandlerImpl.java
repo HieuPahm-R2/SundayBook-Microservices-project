@@ -1,13 +1,14 @@
 package com.hieupahm.services.impl;
 
-import com.hieupahm.constant.Symbol;
 import com.hieupahm.domain.VNpayIpnResConst;
 import com.hieupahm.domain.VNpayParams;
 import com.hieupahm.error.BusinessException;
+import com.hieupahm.payload.dto.BookingDTO;
 import com.hieupahm.payload.res.IpnResponse;
 import com.hieupahm.services.IpnHandler;
 import com.hieupahm.services.PaymentService;
 import com.hieupahm.services.client.BookingFeignClient;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,8 @@ public class IpnHandlerImpl implements IpnHandler {
     private final PaymentServiceImpl vnPayService;
 
     private final BookingFeignClient bookingService;
+
+
     @Override
     public IpnResponse process(Map<String, String> params) {
         if (!vnPayService.verifyIpn(params)) {
@@ -47,7 +50,7 @@ public class IpnHandlerImpl implements IpnHandler {
 
         log.info("[VNPay Ipn] txnRef: {}, response: {}", txnRef, response);
         return response;
-    }
+
     }
 
 

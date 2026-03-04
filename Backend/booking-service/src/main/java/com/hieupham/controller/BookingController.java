@@ -160,11 +160,10 @@ public class BookingController {
      * Update the status of a booking
      */
     @PutMapping("/{bookingId}/status")
-    public ResponseEntity<BookingDTO> updateBookingStatus(
-            @PathVariable Long bookingId,
-            @RequestParam BookingStatus status) throws Exception {
+    public ResponseEntity<BookingDTO> markBooked(
+            @PathVariable Long bookingId) throws Exception {
 
-        Booking updatedBooking = bookingService.updateBookingStatus(bookingId, status);
+        Booking updatedBooking = bookingService.updateBookingStatus(bookingId);
 
         Set<ServiceOfferDTO> offeringDTOS = serviceOfferingService
                 .getServicesByIds(updatedBooking.getServiceIds()).getBody();

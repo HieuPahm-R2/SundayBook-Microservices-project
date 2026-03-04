@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient("payment")
 public interface PaymentFeignClient {
     @PostMapping("/api/payments/save")
-    public ResponseEntity<PaymentResponse> savePayment(
+    public void savePayment(
             @RequestHeader("Authorization") String jwt,
             @RequestBody BookingDTO booking,
             @RequestParam PaymentMethod paymentMethod) throws UserException, PaymentException;

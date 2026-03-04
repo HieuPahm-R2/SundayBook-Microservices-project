@@ -136,21 +136,16 @@ public class BookingServiceImpl implements BookingService {
         return booking.orElse(null);
     }
 
-    @Override
-    public Booking bookingSucess(PaymentOrder order) {
-        Booking existingBooking = getBookingById(order.getBookingId());
-        existingBooking.setStatus(BookingStatus.CONFIRMED);
-        return bookingRepository.save(existingBooking);
-    }
+
 
     @Override
-    public Booking updateBookingStatus(Long bookingId, BookingStatus status) throws Exception {
+    public Booking updateBookingStatus(Long bookingId) throws Exception {
         Booking existingBooking = getBookingById(bookingId);
         if (existingBooking == null) {
             throw new Exception("booking not found");
         }
 
-        existingBooking.setStatus(status);
+        existingBooking.setStatus(BookingStatus.CONFIRMED);
         return bookingRepository.save(existingBooking);
     }
 
