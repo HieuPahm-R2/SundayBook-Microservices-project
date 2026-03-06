@@ -1,4 +1,4 @@
-package com.hieupahm.payload.req;
+package com.hieupahm.payload.res;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -6,23 +6,17 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
-@NoArgsConstructor
+@RequiredArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @Builder
-public class InitPaymentRequest {
-    private String requestId;
+public class PaymentResponse {
 
-    private String ipAddress;
+    private String payment_url;
 
-    private Long userId;
-
-    private String txnRef;
-
-    private long amount;
 }
