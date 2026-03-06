@@ -5,6 +5,7 @@ import java.util.Map;
 import com.hieupahm.domain.PaymentMethod;
 import com.hieupahm.error.PaymentException;
 import com.hieupahm.error.UserException;
+import com.hieupahm.model.PaymentOrder;
 import com.hieupahm.payload.dto.BookingDTO;
 import com.hieupahm.payload.dto.UserDTO;
 import com.hieupahm.payload.req.PaymentRequest;
@@ -48,8 +49,8 @@ public class PaymentController {
 
 
     @GetMapping("/vnpay_ipn")
-    IpnResponse processIpn(@RequestParam Map<String, String> params) {
+    IpnResponse processIpn(@RequestParam Map<String, String> params, @RequestBody PaymentOrder paymentOrder) {
         log.info("[VNPay Ipn] Params: {}", params);
-        return ipnHandler.process(params);
+        return ipnHandler.process(paymentOrder, params);
     }
 }

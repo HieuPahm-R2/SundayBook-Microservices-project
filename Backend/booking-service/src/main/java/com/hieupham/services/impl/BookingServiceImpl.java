@@ -136,7 +136,12 @@ public class BookingServiceImpl implements BookingService {
         return booking.orElse(null);
     }
 
-
+    @Override
+    public Booking bookingSuccess(PaymentOrder order) {
+        Booking existingBooking = getBookingById(order.getBookingId());
+        existingBooking.setStatus(BookingStatus.CONFIRMED);
+        return bookingRepository.save(existingBooking);
+    }
 
     @Override
     public Booking updateBookingStatus(Long bookingId) throws Exception {

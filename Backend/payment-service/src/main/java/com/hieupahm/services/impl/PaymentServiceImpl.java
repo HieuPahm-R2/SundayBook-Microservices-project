@@ -67,6 +67,7 @@ public class PaymentServiceImpl implements PaymentService {
 
     private final PaymentOrderRepository paymentOrderRepository;
 
+
     @Override
     public PaymentResponse init(PaymentRequest request) {
         var amount = request.getAmount() * DEFAULT_MULTIPLIER; // 1. amount * 100
@@ -118,6 +119,7 @@ public class PaymentServiceImpl implements PaymentService {
     private String buildReturnUrl(String txnRef) {
         return String.format(returnUrlFormat, txnRef);
     }
+
     public boolean verifyIpn(Map<String, String> params) {
         var reqSecureHash = params.get(VNpayParams.SECURE_HASH);
         params.remove(VNpayParams.SECURE_HASH);
