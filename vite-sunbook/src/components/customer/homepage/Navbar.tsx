@@ -3,10 +3,10 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { useDispatch, useSelector } from "react-redux";
-import { logout } from "../../../Redux/Auth/action";
+import { logout } from "../../../redux/auth/action";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import useNotificationWebsoket from "../../../util/useNotificationWebsoket";
-import { fetchNotificationsByUser } from "../../../Redux/Notifications/action";
+import { fetchNotificationsByUser } from "../../../redux/notifications/action";
 import { useTheme } from "@emotion/react";
 
 const Navbar = () => {
