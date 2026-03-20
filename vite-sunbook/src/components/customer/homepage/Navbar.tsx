@@ -1,6 +1,5 @@
 import { Avatar, Badge, Button, IconButton, Menu, MenuItem } from "@mui/material";
 import React, { useEffect } from "react";
-import SearchIcon from "@mui/icons-material/Search";
 import { useNavigate } from "react-router-dom";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { useDispatch, useSelector } from "react-redux";

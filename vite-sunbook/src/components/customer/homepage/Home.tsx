@@ -1,4 +1,6 @@
 import { useEffect } from "react";
+import Banner from "./Banner";
+import HomeServiceCard from "./HomeServiceCard";
 
 const Home = () => {
     const { salon } = useSelector((store) => store);
