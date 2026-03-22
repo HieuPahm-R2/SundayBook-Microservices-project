@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 
-import ReportCard from "./Report/ReportCard";
+import ReportCard from "./report/ReportCard";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import EarningCharts from "./Chart/EarningCharts";
 import BookingCharts from "./Chart/BookingChart";

@@ -1,15 +1,14 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 
-
-import Navbar from "../../../admin seller/components/navbar/Navbar";
-import SalonRoutes from "../../../routes/SalonRoutes";
+import SalonRoutes from "../../routes/SalonRoutes";
 import { useDispatch } from "react-redux";
-import { fetchSalonByOwner } from "../../../Redux/Salon/action";
-import SalonDrawerList from "../../components/SideBar/DrawerList";
-import { getSalonReport } from "../../../Redux/Booking/action";
+import SalonDrawerList from "../admin/SalonDrawerList";
+import Navbar from "./navbar/Navbar";
+import { fetchSalonByOwner } from "../../Redux/Salon/action";
+import { getSalonReport } from "../../Redux/Booking/action";
 
 const SalonDashboard = () => {
-  const dispatch=useDispatch();
+  const dispatch = useDispatch<any>();
   // const {}
   useEffect(() => {
     dispatch(fetchSalonByOwner(localStorage.getItem("jwt")));
@@ -19,10 +18,10 @@ const SalonDashboard = () => {
 
   return (
     <div className="min-h-screen">
-      <Navbar DrawerList={SalonDrawerList}/>
+      <Navbar DrawerList={SalonDrawerList} />
       <section className="lg:flex lg:h-[90vh]">
         <div className="hidden lg:block h-full">
-        <SalonDrawerList/>
+          <SalonDrawerList />
         </div>
         <div className="p-10 w-full lg:w-[80%]  overflow-y-auto">
           <SalonRoutes />

@@ -17,12 +17,13 @@ import {
   SEARCH_SALONS_REQUEST,
   SEARCH_SALONS_SUCCESS,
   SEARCH_SALONS_FAILURE,
-} from "./actionTypes.ts";
+  // @ts-ignore - casing conflict between src/redux/ and src/Redux/ on Windows filesystem
+} from "./actionTypes";
 import api from "../../config/api";
 
 const API_BASE_URL = "/api/salons";
 
-export const createSalon = (reqData) => async (dispatch) => {
+export const createSalon = (reqData: any) => async (dispatch: any) => {
   dispatch({ type: CREATE_SALON_REQUEST });
   try {
     const response = await api.post(`/auth/signup`, reqData.ownerDetails);
@@ -41,11 +42,11 @@ export const createSalon = (reqData) => async (dispatch) => {
     dispatch({ type: CREATE_SALON_SUCCESS, payload: data });
   } catch (error) {
     console.log("error creating salon", error);
-    dispatch({ type: CREATE_SALON_FAILURE, payload: error.message });
+    dispatch({ type: CREATE_SALON_FAILURE, payload: (error as any).message });
   }
 };
 
-export const updateSalon = (salonId, salon) => async (dispatch) => {
+export const updateSalon = (salonId: any, salon: any) => async (dispatch: any) => {
   dispatch({ type: UPDATE_SALON_REQUEST });
   try {
     const { data } = await api.put(`${API_BASE_URL}/${salonId}`, salon, {
@@ -55,11 +56,11 @@ export const updateSalon = (salonId, salon) => async (dispatch) => {
     });
     dispatch({ type: UPDATE_SALON_SUCCESS, payload: data });
   } catch (error) {
-    dispatch({ type: UPDATE_SALON_FAILURE, payload: error.message });
+    dispatch({ type: UPDATE_SALON_FAILURE, payload: (error as any).message });
   }
 };
 
-export const fetchSalons = () => async (dispatch) => {
+export const fetchSalons = () => async (dispatch: any) => {
   dispatch({ type: FETCH_SALONS_REQUEST });
   try {
     const { data } = await api.get(API_BASE_URL, {
@@ -71,11 +72,11 @@ export const fetchSalons = () => async (dispatch) => {
     dispatch({ type: FETCH_SALONS_SUCCESS, payload: data });
   } catch (error) {
     console.log("error fetching salons", error);
-    dispatch({ type: FETCH_SALONS_FAILURE, payload: error.message });
+    dispatch({ type: FETCH_SALONS_FAILURE, payload: (error as any).message });
   }
 };
 
-export const fetchSalonById = (salonId) => async (dispatch) => {
+export const fetchSalonById = (salonId: any) => async (dispatch: any) => {
   dispatch({ type: FETCH_SALON_BY_ID_REQUEST });
   try {
     const { data } = await api.get(`${API_BASE_URL}/${salonId}`, {
@@ -85,11 +86,11 @@ export const fetchSalonById = (salonId) => async (dispatch) => {
     });
     dispatch({ type: FETCH_SALON_BY_ID_SUCCESS, payload: data });
   } catch (error) {
-    dispatch({ type: FETCH_SALON_BY_ID_FAILURE, payload: error.message });
+    dispatch({ type: FETCH_SALON_BY_ID_FAILURE, payload: (error as any).message });
   }
 };
 
-export const fetchSalonByOwner = (jwt) => async (dispatch) => {
+export const fetchSalonByOwner = (jwt: any) => async (dispatch: any) => {
   dispatch({ type: FETCH_SALON_BY_OWNER_REQUEST });
   try {
     const { data } = await api.get(`${API_BASE_URL}/owner`, {
@@ -99,11 +100,11 @@ export const fetchSalonByOwner = (jwt) => async (dispatch) => {
     dispatch({ type: FETCH_SALON_BY_OWNER_SUCCESS, payload: data });
   } catch (error) {
     console.log("error fetching salon by owner - ", error);
-    dispatch({ type: FETCH_SALON_BY_OWNER_FAILURE, payload: error.message });
+    dispatch({ type: FETCH_SALON_BY_OWNER_FAILURE, payload: (error as any).message });
   }
 };
 
-export const searchSalon = ({ jwt, city }) => async (dispatch) => {
+export const searchSalon = ({ jwt, city }: { jwt: string; city: string }) => async (dispatch: any) => {
   dispatch({ type: SEARCH_SALONS_REQUEST });
   try {
     const { data } = await api.get(`${API_BASE_URL}/search`, {
@@ -114,6 +115,6 @@ export const searchSalon = ({ jwt, city }) => async (dispatch) => {
     dispatch({ type: SEARCH_SALONS_SUCCESS, payload: data });
   } catch (error) {
     console.log("error fetching salon by owner - ", error);
-    dispatch({ type: SEARCH_SALONS_FAILURE, payload: error.message });
+    dispatch({ type: SEARCH_SALONS_FAILURE, payload: (error as any).message });
   }
 };
